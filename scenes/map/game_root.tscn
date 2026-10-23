@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://bnfbq3lsjhrhh"]
+
+[ext_resource type="PackedScene" uid="uid://dmyq47vaxitgy" path="res://scenes/player/player.tscn" id="1_0ii4w"]
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_6kx4d"]
+rayleigh_color = Color(0.2627, 0.48635, 0.71, 1)
+ground_color = Color(0.22352941, 0.3254902, 0.54901963, 1)
+
+[sub_resource type="Sky" id="Sky_dguew"]
+sky_material = SubResource("PhysicalSkyMaterial_6kx4d")
+
+[sub_resource type="Environment" id="Environment_jo5lq"]
+background_mode = 2
+sky = SubResource("Sky_dguew")
+sky_custom_fov = 90.0
+ssao_enabled = true
+sdfgi_enabled = true
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_0ii4w"]
+auto_exposure_speed = 64.0
+dof_blur_near_enabled = true
+dof_blur_near_transition = 2.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_jo5lq"]
+size = Vector3(50, 0.2, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dguew"]
+albedo_color = Color(0.23441665, 0.58, 0.20300001, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hqhjg"]
+albedo_color = Color(0.1944, 0.72, 0.39587995, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6akba"]
+albedo_color = Color(0.1008, 0.53200006, 0.84, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ii4w"]
+albedo_color = Color(0.79, 0.18170002, 0.18170002, 1)
+
+[node name="Game" type="Node" unique_id=1022505057]
+
+[node name="Player" parent="." unique_id=29801732 instance=ExtResource("1_0ii4w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Environment" type="Node3D" parent="." unique_id=403130326]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" unique_id=1706049885]
+environment = SubResource("Environment_jo5lq")
+camera_attributes = SubResource("CameraAttributesPractical_0ii4w")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment" unique_id=121936069]
+transform = Transform3D(0.59003925, -0.7458717, -0.3090779, 0.39501593, -0.06717885, 0.91621476, -0.70414215, -0.6626933, 0.25499305, 0, 5.989442, 0)
+light_angular_distance = 10.0
+shadow_enabled = true
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="." unique_id=9765111]
+use_collision = true
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="CSGCombiner3D" unique_id=1751422429]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0)
+use_collision = true
+mesh = SubResource("BoxMesh_jo5lq")
+material = SubResource("StandardMaterial3D_dguew")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D" unique_id=2069364187]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2, 0.41681242, 0)
+use_collision = true
+size = Vector3(3, 1, 3)
+material = SubResource("StandardMaterial3D_hqhjg")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGCombiner3D" unique_id=730018297]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2, 0.81681246, 5)
+use_collision = true
+size = Vector3(3, 1.8000001, 3)
+material = SubResource("StandardMaterial3D_6akba")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="CSGCombiner3D" unique_id=2037705924]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2, 1.2168125, 10)
+use_collision = true
+size = Vector3(3, 2.6000001, 3)
+material = SubResource("StandardMaterial3D_0ii4w")
