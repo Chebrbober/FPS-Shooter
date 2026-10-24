@@ -1,19 +1,25 @@
 extends CharacterBody3D
 
 @export_group("Movement")
-@export var speed: float = 5.0
+@export var speed: float = 3.0
 @export var acceleration: float = 25.0
 @export var jump_velocity: float = 5.0
-@export var gravity = 9.8
+@export var gravity: float = 9.8
+@export_range(0,100) var stamina: float = 100
+@export var stamina_cost: float = 25
+
+signal stamina_changed(current: float)
 
 @export_group("Camera")
+@onready var camera: Camera3D = $Camera3D
 @export var sensitivity: float = 0.003
 @export var camera_min_pitch: float = -75.0
 @export var camera_max_pitch: float = 75.0
+@export_range(1, 179) var sprint_FOV: float = 100
+@export_range(1, 179) var normal_FOV: float = 75
 
-@onready var camera: Camera3D = $Camera3D
-
-@export_subgroup("Camera Presets")
+var tween: Tween
+var is_moving: bool = false
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -31,6 +37,7 @@ func jump(delta: float) -> void:
 
 func move(delta: float) -> void:
 	var input_dir: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	is_moving = input_dir != Vector2.ZERO
 	var direction: Vector3 = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 
 	if direction:
@@ -40,6 +47,8 @@ func move(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0.0, acceleration * delta)
 		velocity.z = move_toward(velocity.z, 0.0, acceleration * delta)
 
+	stamina = clamp(stamina, 0.0, 100.0)
+	stamina_changed.emit(stamina)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
@@ -50,3 +59,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			deg_to_rad(camera_min_pitch),
 			deg_to_rad(camera_max_pitch)
 		)
+
+func tween_fov(target_fov: float) -> void:
+	if not camera: return
+	if tween: tween.kill()
+	tween = create_tween()
+	tween.tween_property(camera, "fov", target_fov, 0.75).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	print("changed_fov")
