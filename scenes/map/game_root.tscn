@@ -15,11 +15,7 @@ sky = SubResource("Sky_dguew")
 sky_custom_fov = 90.0
 ssao_enabled = true
 sdfgi_enabled = true
-
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_0ii4w"]
-auto_exposure_speed = 64.0
-dof_blur_near_enabled = true
-dof_blur_near_transition = 2.0
+glow_enabled = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_jo5lq"]
 size = Vector3(50, 0.2, 50)
@@ -45,7 +41,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" unique_id=1706049885]
 environment = SubResource("Environment_jo5lq")
-camera_attributes = SubResource("CameraAttributesPractical_0ii4w")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment" unique_id=121936069]
 transform = Transform3D(0.59003925, -0.7458717, -0.3090779, 0.39501593, -0.06717885, 0.91621476, -0.70414215, -0.6626933, 0.25499305, 0, 5.989442, 0)

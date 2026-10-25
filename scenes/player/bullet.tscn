@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://ewt4am3ommnu"]
+
+[ext_resource type="Script" uid="uid://c4cqsmq1gimnl" path="res://scenes/player/bullet.gd" id="1_2as5g"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kel6l"]
+albedo_color = Color(0.88, 0.66821337, 0.21120001, 1)
+metallic = 0.76
+emission_enabled = true
+emission = Color(0.72, 0.54, 0, 1)
+emission_energy_multiplier = 5.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_jo5lq"]
+material = SubResource("StandardMaterial3D_kel6l")
+size = Vector3(0.05, 0.05, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6kx4d"]
+albedo_color = Color(1, 1, 0, 1)
+emission_enabled = true
+emission = Color(1, 0.8666667, 0, 1)
+emission_energy_multiplier = 8.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_31djl"]
+direction = Vector3(1, 0, 1)
+initial_velocity_min = 3.0
+initial_velocity_max = 5.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_dguew"]
+size = Vector3(0.04, 0.04, 0.04)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jo5lq"]
+size = Vector3(0.05, 0.05, 0.5)
+
+[node name="Bullet" type="Node3D" unique_id=368597217]
+script = ExtResource("1_2as5g")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=679518520]
+mesh = SubResource("BoxMesh_jo5lq")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=392879569]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.30337048)
+material_override = SubResource("StandardMaterial3D_6kx4d")
+emitting = false
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_31djl")
+draw_pass_1 = SubResource("BoxMesh_dguew")
+
+[node name="Timer" type="Timer" parent="." unique_id=735482722]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[node name="ShapeCast3D" type="ShapeCast3D" parent="." unique_id=711244480]
+shape = SubResource("BoxShape3D_jo5lq")
+target_position = Vector3(0, 0, -1)
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

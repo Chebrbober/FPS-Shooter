@@ -18,6 +18,12 @@ signal stamina_changed(current: float)
 @export_range(1, 179) var sprint_FOV: float = 100
 @export_range(1, 179) var normal_FOV: float = 75
 
+@export_group("Bullet")
+@onready var gun_anim: AnimationPlayer = $Camera3D/Rifle/AnimationPlayer
+@onready var gun_barrel: RayCast3D = $Camera3D/Rifle/RayCast3D
+@export var bullet: PackedScene
+var bullet_instance: Node3D
+
 var tween: Tween
 var is_moving: bool = false
 
@@ -27,7 +33,17 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	move(delta)
 	jump(delta)
+	shoot()
 	move_and_slide()
+
+func shoot() -> void:
+	if Input.is_action_pressed("shoot"):
+		if !gun_anim.is_playing():
+			gun_anim.play("Shoot")
+			bullet_instance = bullet.instantiate()
+			bullet_instance.position = gun_barrel.global_position
+			bullet_instance.transform.basis = gun_barrel.global_transform.basis
+			get_parent().add_child(bullet_instance)
 
 func jump(delta: float) -> void:
 	if Input.is_action_just_pressed("jump") and is_on_floor():

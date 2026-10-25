@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://daivhay56uwkm"]
+
+[ext_resource type="PackedScene" uid="uid://d8nh0gwa4428" path="res://models/ak47.glb" id="1_dow6b"]
+
+[sub_resource type="Animation" id="Animation_dow6b"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Cylinder:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Plane:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_u008i"]
+resource_name = "Shoot"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Cylinder:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.02, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.25), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Plane:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.02, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.25), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uima1"]
+_data = {
+&"RESET": SubResource("Animation_dow6b"),
+&"Shoot": SubResource("Animation_u008i")
+}
+
+[node name="Rifle" unique_id=1520536503 instance=ExtResource("1_dow6b")]
+
+[node name="RayCast3D" type="RayCast3D" parent="." index="2" unique_id=487778447]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15496299, -0.88826317)
+target_position = Vector3(0, 0, -1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="3" unique_id=277233479]
+libraries/ = SubResource("AnimationLibrary_uima1")
